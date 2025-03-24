@@ -2,16 +2,19 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 
-# UMAとOKAを三人麻雀に合わせて変更
-UMA = [30, 0, -30]  # 3人用UMA
-OKA = [35000, 35000]  # 三人麻雀用のオカ
+UMA = [30, 0, -30] # 1位30点、2位0点、3位-30点
+OKA = [35000, 35000] # 35000点持ち35000点返し
 
 # 三人麻雀ルールに基づくポイント計算
 def calculate_points(scores):
-    # スコアの合計が1000点か確認
+    # スコアの合計が正常か確認
     sum_scores = sum([int(score) for score in scores])
     if sum_scores != 350 * 3:
         print("ERROR! - sum is wrong. sum = " + str(sum_scores))
+    
+    # ボーナス点
+    bonus = UMA.copy()
+    bonus[0] += 3 * (OKA[1] - OKA[0]) * 0.001
     
     # 素点に基づいて順位を決定
     sorted_scores = sorted(scores, reverse=True)
@@ -21,7 +24,7 @@ def calculate_points(scores):
         scores[i] = int(score) * 100 - OKA[1]
     
     # ポイント計算
-    points = [round((score / 1000 + UMA[rank]) * 10) / 10 for score, rank in zip(scores, ranks)]
+    points = [round((score / 1000 + bonus[rank]) * 10) / 10 for score, rank in zip(scores, ranks)]
 
     return points
 

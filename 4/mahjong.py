@@ -2,8 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 
-UMA = [50, 10, -10, -30]
-OKA = [25000, 30000]
+UMA = [30, 10, -10, -30] # 1位50点、2位10点、3位-10点、4位-30点
+OKA = [25000, 30000] # 25000点持ち30000点返し
 
 # Mリーグルールに基づくポイント計算
 def calculate_points(scores):
@@ -11,6 +11,10 @@ def calculate_points(scores):
     sum_scores = sum([int(score) for score in scores])
     if sum_scores != 1000:
         print("ERROR! - sum is wrong. sum = " + str(sum_scores))
+
+    # ボーナス点
+    bonus = UMA.copy()
+    bonus[0] += 4 * (OKA[1] - OKA[0]) * 0.001
     
     # 素点に基づいて順位を決定
     sorted_scores = sorted(scores, reverse = True)
@@ -20,7 +24,7 @@ def calculate_points(scores):
         scores[i] = int(score) * 100 - OKA[1]
     
     # ポイント計算
-    points = [round((score / 1000 + UMA[rank]) * 10) / 10 for score, rank in zip(scores, ranks)]
+    points = [round((score / 1000 + bonus[rank]) * 10) / 10 for score, rank in zip(scores, ranks)]
 
     #print(points)
 
