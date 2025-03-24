@@ -53,10 +53,7 @@ def process_file(file_path):
 
     # 累積ポイントを保存
     output_file = 'cumulative_points.csv'
-    cumulative_points.to_csv(output_file, index=False)
-
-# グラフ描画
-players = ["Player1", "Player2", "Player3", "Player4"]
+    cumulative_points.to_csv(output_file, index = False)
 
 def plot_points(players, cumulative_points):
     plt.figure(figsize=(10, 6))
