@@ -46,7 +46,7 @@ def process_file(file_path):
         all_points.append(points)
 
     # ポイント変化の累積計算
-    cumulative_points = pd.DataFrame(all_points, columns=[f'player{i}' for i in range(1, 5)]).cumsum()
+    cumulative_points = pd.DataFrame(all_points, columns=players).cumsum()
 
     # グラフ化
     plot_points(players, cumulative_points)
@@ -55,6 +55,9 @@ def process_file(file_path):
     output_file = 'cumulative_points.csv'
     cumulative_points.to_csv(output_file, index = False)
 
+    return cumulative_points
+
+# グラフ描画
 def plot_points(players, cumulative_points):
     plt.figure(figsize=(10, 6))
     for i, player in enumerate(cumulative_points.columns):
@@ -78,4 +81,9 @@ def plot_points(players, cumulative_points):
 # メイン処理
 if __name__ == "__main__":
     input_file = "scores.csv"
-    process_file(input_file)
+    calculate_points = process_file(input_file)
+
+    print("-------------- 合計スコア -------------")
+    print(calculate_points.tail(1).to_string(index=False))
+    print("---------------------------------------")
+
